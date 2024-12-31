@@ -1,0 +1,223 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Download Facebook Reels - Facebook Reels Downloader{% endblock %}
+
+{% block content %}
+    <section class="hero">
+        <h1>Facebook Reels Downloader</h1>
+        <p>Download Facebook Reels in HD quality with one click!</p>
+    
+        <div class="container">
+            <form class="download-form" id="download-form">
+                <div class="input-group">
+                    <input type="text" id="video-url" placeholder="Paste your Facebook Reel link here">
+                    <button type="button" class="paste-btn">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/>
+                            <rect x="8" y="2" width="8" height="4" rx="1" ry="1"/>
+                        </svg>
+                    </button>
+                </div>
+                <button type="submit" class="download-btn">
+                    <div class="spinner"></div>
+                    <span>Download</span>
+                </button>
+            </form>
+            <div id="url-validation" class="validation-message"></div>
+        </div>
+        <div id="progress-container" class="loading-spinner" style="display: none;">
+            <div class="bounce-loader">
+                <div class="dot"></div>
+                <div class="dot"></div>
+                <div class="dot"></div>
+            </div>
+            <div class="processing-text">Processing your reel...</div>
+        </div>
+
+        <div id="video-container" style="display: none;">
+            <div class="video-preview-container">
+                <div class="video-thumbnail-container">
+                    <video id="video-preview" class="video-thumbnail" controls></video>
+                </div>
+                <div class="video-info">
+                    <h2 id="video-title" class="video-title">No video title</h2>
+                    <div id="video-description" class="video-description">Description: No video description...</div>
+                    <div id="video-duration" class="video-duration">Duration: 00 minutes, 00 seconds</div>
+                    <div class="download-buttons">
+                        <a href="#" id="sd-download" class="download-btn normal">
+                            Download Video in Normal Quality
+                        </a>
+                        <a href="#" id="hd-download" class="download-btn hd">
+                            Download Video in HD Quality
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="intro">
+        <div class="container">
+            <h2>Unlock the Power of Facebook Reels with FDownloader</h2>
+            
+            <p class="intro-text">
+                Ever stumbled upon a Facebook Reel that you wished you could keep forever? That's where <strong>FDownloader</strong> comes in. We're not just another video downloader – we're your gateway to preserving those fleeting moments of brilliance, humor, and inspiration that make Reels so addictive.
+            </p>
+            
+            <p class="intro-text">
+                With FDownloader, you're not just downloading videos; you're building a personal library of content that resonates with you. Whether it's a mind-blowing dance routine, a hilarious skit, or a life-changing cooking hack, our tool ensures you never lose track of the content that matters to you. And the best part? We do it all while respecting your privacy and keeping things simple.
+            </p>
+        </div>
+    </section>
+
+    <section class="why-use">
+        <h2>Why FDownloader is Your Go-To Reels Saver</h2>
+        <p>Because great content deserves to be remembered, shared, and enjoyed on your terms.</p>
+        
+        <div class="features-grid">
+            <div class="feature">
+                <div class="feature-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#00BF6F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/>
+                    </svg>
+                </div>
+                <h3>Speed Demon</h3>
+                <p>Blink and you might miss it – that's how fast our Reel downloads are.</p>
+            </div>
+            <div class="feature">
+                <div class="feature-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#00BF6F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polygon points="23 7 16 12 23 17 23 7"/>
+                        <rect x="1" y="5" width="15" height="14" rx="2" ry="2"/>
+                    </svg>
+                </div>
+                <h3>Crystal Clear</h3>
+                <p>HD quality that makes every pixel pop – see Reels as they were meant to be seen.</p>
+            </div>
+            <div class="feature">
+                <div class="feature-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#00BF6F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M12 21a9 9 0 0 0 9-9 9 9 0 0 0-9-9 9 9 0 0 0-9 9 9 9 0 0 0 9 9z"/>
+                        <polyline points="12 8 12 12 14 14"/>
+                    </svg>
+                </div>
+                <h3>Always On, Always Free</h3>
+                <p>No subscriptions, no limits – just unlimited access to your favorite Reels.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="how-to">
+        <h2>Save Your First Reel in 3 Simple Steps</h2>
+        <div class="steps">
+            <div class="step">
+                <div class="step-number">1</div>
+                <p>Find a Reel that speaks to you and copy its URL</p>
+            </div>
+            <div class="step">
+                <div class="step-number">2</div>
+                <p>Paste the magic link into our downloader box</p>
+            </div>
+            <div class="step">
+                <div class="step-number">3</div>
+                <p>Hit download and voila! Your Reel is ready to keep</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="features-box">
+        <h2>What Sets FDownloader Apart</h2>
+        <div class="features-list">
+            <div class="features-column">
+                <div class="feature-item">
+                    <svg class="check-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="20 6 9 17 4 12"/>
+                    </svg>
+                    Seamless HD downloads for a premium viewing experience
+                </div>
+                <div class="feature-item">
+                    <svg class="check-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="20 6 9 17 4 12"/>
+                    </svg>
+                    No sign-ups, no fuss – just instant downloads
+                </div>
+                <div class="feature-item">
+                    <svg class="check-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="20 6 9 17 4 12"/>
+                    </svg>
+                    Lightning-fast processing for your on-the-go lifestyle
+                </div>
+            </div>
+            <div class="features-column">
+                <div class="feature-item">
+                    <svg class="check-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="20 6 9 17 4 12"/>
+                    </svg>
+                    Universal compatibility – works on all your devices
+                </div>
+                <div class="feature-item">
+                    <svg class="check-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="20 6 9 17 4 12"/>
+                    </svg>
+                    Unlimited downloads to build your personal Reels library
+                </div>
+                <div class="feature-item">
+                    <svg class="check-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="20 6 9 17 4 12"/>
+                    </svg>
+                    Robust security measures to keep your data safe
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="faq">
+        <div class="container">
+            <h2>Your Questions, Answered</h2>
+            <div class="faq-list">
+                <div class="faq-item">
+                    <h3>Is FDownloader really free to use?</h3>
+                    <div class="faq-answer">
+                        <p>We believe in making content accessible to everyone. Download as many Reels as you like, without ever reaching for your wallet.</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <h3>Can I save Reels from private Facebook accounts?</h3>
+                    <div class="faq-answer">
+                        <p>For privacy reasons, FDownloader can only download Reels that are publicly accessible. If you can view the Reel without logging in, we can help you save it.</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <h3>What's the highest quality I can download?</h3>
+                    <div class="faq-answer">
+                        <p>We always aim for the stars! FDownloader grabs the highest quality version available, typically up to 1080p HD. Your eyes will thank you.</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <h3>Will FDownloader work on my smartphone?</h3>
+                    <div class="faq-answer">
+                        <p>You bet! Whether you're team iPhone or Android, our tool works smoothly on all mobile devices. Desktop users, you're covered too!</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <h3>How quickly can I download a Reel?</h3>
+                    <div class="faq-answer">
+                        <p>Faster than you can say "viral content"! Most Reels are processed and ready for download in just a few seconds, depending on your internet speed.</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <h3>Is it legal to download Facebook Reels?</h3>
+                    <div class="faq-answer">
+                        <p>While our service is legal, it's important to respect copyright laws. We recommend only downloading Reels for personal use and always crediting the original creator when sharing.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}
+
+{% block extra_js %}
+    <script src="{% static 'js/reels.js' %}"></script>
+{% endblock %}
+

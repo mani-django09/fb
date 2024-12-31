@@ -1,0 +1,236 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}FDownloader.ltd - Facebook Video Downloader | Facebook Downloader | Download Facebook{% endblock %}
+
+{% block meta %}
+<meta name="description" content="FDownloader.ltd: The best Facebook video downloader and Facebook downloader. Download Facebook videos easily with our free online tool.">
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <section class="hero">
+        <h1>Facebook Video Downloader - Download Facebook Videos Easily</h1>
+        <p>Download Facebook videos in Full HD, 1080p, 2K, and 4K quality with ease!</p>
+        
+        <form class="download-form" id="download-form">
+            <div class="input-group">
+                <input type="text" id="video-url" placeholder="Paste your Facebook video link here">
+                <button type="button" class="paste-btn">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/>
+                        <rect x="8" y="2" width="8" height="4" rx="1" ry="1"/>
+                    </svg>
+                </button>
+            </div>
+            <button type="submit" class="download-btn">
+                <div class="spinner"></div>
+                <span>Download</span>
+            </button>             
+        </form>
+        <div id="progress-container" class="loading-spinner" style="display: none;">
+            <div class="bounce-loader">
+                <div class="dot"></div>
+                <div class="dot"></div>
+                <div class="dot"></div>
+            </div>
+            <div class="processing-text">Processing your video...</div>
+        </div>
+        <div id="url-validation"></div>
+        <div id="result" style="display: none;">
+            <h3>Download Links:</h3>
+            <div id="download-links"></div>
+        </div>
+        <div id="error" style="display: none;"></div>
+       
+        <div id="video-container" style="display: none;">
+            <div class="video-preview-container">
+                <div class="video-thumbnail-container">
+                    <video id="video-preview" class="video-thumbnail" controls></video>
+                </div>
+                <div class="video-info">
+                    <h2 id="video-title" class="video-title">No video title</h2>
+                    <div id="video-description" class="video-description">Description: No video description...</div>
+                    <div id="video-duration" class="video-duration">Duration: 06 minutes, 57 seconds</div>
+                    <div class="download-buttons">
+                        <a href="#" id="sd-download" class="download-btn normal">
+                            Download Video in Normal Quality
+                        </a>
+                        <a href="#" id="hd-download" class="download-btn hd">
+                            Download Video in HD Quality
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="why-use">
+        <h2>Why Choose FDownloader.ltd?</h2>
+        <p>FDownloader.ltd is your go-to solution for downloading Facebook content. Whether it's public posts, private videos, or the latest Reels, our Facebook video downloader handles it all with unparalleled speed and quality.</p>
+        
+        <div class="features-grid">
+            <div class="feature">
+                <div class="feature-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#00BF6F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/>
+                    </svg>
+                </div>
+                <h3>Lightning Fast</h3>
+                <p>Download Facebook videos in seconds with our optimized algorithms.</p>
+            </div>
+            <div class="feature">
+                <div class="feature-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#00BF6F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polygon points="23 7 16 12 23 17 23 7"/>
+                        <rect x="1" y="5" width="15" height="14" rx="2" ry="2"/>
+                    </svg>
+                </div>
+                <h3>Premium Quality</h3>
+                <p>Choose from various qualities, including 4K and Full HD. Convert videos to high-bitrate MP3.</p>
+            </div>
+            <div class="feature">
+                <div class="feature-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#00BF6F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M12 21a9 9 0 0 0 9-9 9 9 0 0 0-9-9 9 9 0 0 0-9 9 9 9 0 0 0 9 9z"/>
+                        <polyline points="12 8 12 12 14 14"/>
+                    </svg>
+                </div>
+                <h3>Always Free</h3>
+                <p>No hidden fees, no subscriptions. Enjoy unlimited downloads without registration.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="how-to">
+        <h2>How to Use FDownloader.ltd</h2>
+        <div class="steps">
+            <div class="step">
+                <div class="step-number">1</div>
+                <p>Copy the URL of the Facebook video you want to download.</p>
+            </div>
+            <div class="step">
+                <div class="step-number">2</div>
+                <p>Paste the URL into our Facebook video downloader box and click "Download Now".</p>
+            </div>
+            <div class="step">
+                <div class="step-number">3</div>
+                <p>Choose your preferred quality and download the Facebook video instantly.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="features-box">
+        <h2>FDownloader.ltd's Powerful Features</h2>
+        <div class="features-list">
+            <div class="features-column">
+                <div class="feature-item">
+                    <svg class="check-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="20 6 9 17 4 12"/>
+                    </svg>
+                    Download Facebook videos in the highest available quality.
+                </div>
+                <div class="feature-item">
+                    <svg class="check-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="20 6 9 17 4 12"/>
+                    </svg>
+                    Access and download private Facebook videos.
+                </div>
+                <div class="feature-item">
+                    <svg class="check-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="20 6 9 17 4 12"/>
+                    </svg>
+                    Unlimited downloads with no restrictions.
+                </div>
+            </div>
+            <div class="features-column">
+                <div class="feature-item">
+                    <svg class="check-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="20 6 9 17 4 12"/>
+                    </svg>
+                    Support for Facebook Reels and Stories.
+                </div>
+                <div class="feature-item">
+                    <svg class="check-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="20 6 9 17 4 12"/>
+                    </svg>
+                    Convert Facebook videos to high-quality MP3.
+                </div>
+                <div class="feature-item">
+                    <svg class="check-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="20 6 9 17 4 12"/>
+                    </svg>
+                    Compatible with all devices, no installation needed.
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="description">
+        <h2>FDownloader.ltd - The Ultimate Facebook Video Downloader</h2>
+        <p>FDownloader.ltd is your go-to solution for downloading any type of content from Facebook. Our advanced Facebook video downloader ensures you can download videos, Reels, and Stories in the highest possible quality, including 4K and Full HD. We also offer seamless conversion to MP3, perfect for music lovers and podcast enthusiasts. Use our tool to download Facebook content quickly and easily.</p>
+        <p>What sets FDownloader.ltd apart is its ability to handle almost any Facebook content. From public posts to private videos, closed group content to Fanpage exclusives, our Facebook downloader does it all. Even live streams can be captured once they've ended. Experience the power of FDownloader.ltd today and never miss out on your favorite Facebook content again!</p>
+    </section>
+
+    <section class="faq">
+        <div class="container">
+            <h2>Frequently Asked Questions</h2>
+            <div class="faq-list">
+                <div class="faq-item">
+                    <h3>What is FDownloader.ltd and how does it work?</h3>
+                    <div class="faq-answer">
+                        <p>FDownloader.ltd is a powerful online tool designed to download videos from Facebook. It works by extracting the video file from the Facebook page when you provide the video's URL. Our advanced algorithms process the link and offer you download options in various qualities, including HD and 4K when available.</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <h3>Is FDownloader.ltd free to use?</h3>
+                    <div class="faq-answer">
+                        <p>Yes, FDownloader.ltd is completely free to use. We don't charge any fees or require any subscriptions. You can download as many videos as you want without any cost.</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <h3>Can I download private Facebook videos?</h3>
+                    <div class="faq-answer">
+                        <p>FDownloader.ltd supports downloading private Facebook videos, provided you have the necessary permissions to view the video. However, please respect copyright laws and personal privacy when downloading and using content.</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <h3>What video qualities does FDownloader.ltd support?</h3>
+                    <div class="faq-answer">
+                        <p>FDownloader.ltd supports a wide range of video qualities, from standard definition up to 4K resolution. The available quality options depend on the original video uploaded to Facebook. We always offer the highest quality available for each video.</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <h3>Can I use FDownloader.ltd on my mobile device?</h3>
+                    <div class="faq-answer">
+                        <p>FDownloader.ltd is fully compatible with mobile devices. Our website is responsive and works seamlessly on smartphones and tablets, allowing you to download Facebook videos on any device with an internet connection.</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <h3>Is it legal to download videos from Facebook?</h3>
+                    <div class="faq-answer">
+                        <p>The legality of downloading Facebook videos can vary depending on the content and your intended use. Generally, downloading videos for personal use is acceptable. However, it's important to respect copyright laws and not distribute or use the content commercially without permission from the copyright holder.</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <h3>How do I download Facebook Reels using FDownloader.ltd?</h3>
+                    <div class="faq-answer">
+                        <p>Downloading Facebook Reels is just as easy as downloading regular videos. Simply copy the URL of the Reel you want to download, paste it into FDownloader.ltd's input box, and click the "Download" button. Our system will process the Reel and provide you with download options.</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <h3>Can FDownloader.ltd convert Facebook videos to MP3?</h3>
+                    <div class="faq-answer">
+                        <p>Yes, FDownloader.ltd offers the option to convert Facebook videos to MP3 format. This feature is perfect for extracting audio from music videos or converting spoken content to audio-only format for easier listening on-the-go.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/home.js' %}"></script>
+{% endblock %}
+

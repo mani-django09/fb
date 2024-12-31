@@ -1,0 +1,8 @@
+User-agent: *
+Allow: /
+Disallow: /admin/
+Disallow: /download/
+Disallow: /download-reel/
+
+Sitemap: https://yourdomain.com/sitemap.xml
+

@@ -1,0 +1,70 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}FDownloader.ltd - Facebook Video Downloader{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Download Facebook videos and reels easily with FDownloader.ltd. Free online tool to save FB videos in HD quality.">
+    <meta name="keywords" content="facebook video downloader, facebook reels downloader, download facebook videos, save facebook videos, HD facebook downloader">
+    <meta name="author" content="FDownloader.ltd">
+    <meta name="robots" content="index, follow">
+    <meta property="og:title" content="{% block og_title %}FDownloader.ltd - Facebook Video Downloader{% endblock %}">
+    <meta property="og:description" content="{% block og_description %}Download Facebook videos and reels in HD quality for free. Save any Facebook video easily with FDownloader.ltd{% endblock %}">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="{{ request.build_absolute_uri }}">
+    <meta property="og:image" content="{% static 'images/fdownloader-og.png' %}">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="FDownloader.ltd - Facebook Video Downloader">
+    <meta name="twitter:description" content="Download Facebook videos and reels in HD quality for free. Save any Facebook video easily.">
+    <link rel="canonical" href="{{ request.build_absolute_uri }}">
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="{% static 'images/favicon.png' %}">
+    <link rel="apple-touch-icon" href="{% static 'images/apple-touch-icon.png' %}">
+    {% block extra_css %}{% endblock %}
+</head>
+<body>
+    <header>
+        <div class="container">
+            <nav class="navbar">
+                <a href="{% url 'home' %}" class="logo">FDownloader.ltd</a>
+                <div class="nav-links">
+                    <a href="/" {% if request.path == '/' %}class="active"{% endif %}>
+                        Facebook Downloader
+                    </a>
+                    <a href="{% url 'reels' %}" {% if request.path == '/facebook-reels-downloader/' %}class="active"{% endif %}>
+                        Reels video downloader
+                    </a>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="copyright">© 2024 FDownloader.ltd - All rights reserved</div>
+                <div class="footer-links">
+                    <a href="/about">About Us</a>
+                    <a href="/terms">Terms of Service</a>
+                    <a href="/privacy">Privacy Policy</a>
+                    <a href="/contact">Contact Us</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="{% static 'js/main.js' %}"></script>
+    {% block extra_js %}{% endblock %}
+</body>
+</html>
+
