@@ -496,6 +496,10 @@ footer {
 .footer-links a:hover {
     color: var(--primary-color);
 }
+@media (max-width: 768px) {
+    .hero {
+        padding: 40px 0;
+    }
 
 /* Responsive Design */
 @media (max-width: 768px) {
@@ -509,25 +513,79 @@ footer {
     }
 
     .nav-links {
+        display: flex;
         flex-direction: column;
-        gap: 20px;
+        gap: 15px;
     }
-
+}
     .hero h1 {
-        font-size: 36px;
-    }
+font-size: 24px;
+        padding: 0 20px;
+        }
 
     .hero p {
-        font-size: 18px;
+        font-size: 16px;
+        padding: 0 20px;
+        margin-bottom: 20px; 
+       }
+
+       .download-form {
+        flex-direction: column;
+        padding: 0 20px;
     }
 
+    .input-group {
+        width: 100%;
+        margin-bottom: 10px;
+    }
+    .download-btn {
+        width: 100%;
+    }
 
+    .video-preview-container {
+        flex-direction: column;
+        padding: 15px;
+        margin: 15px;
+    }
+
+    .video-thumbnail-container {
+        width: 100%;
+        flex: none;
+    }
+
+    .video-info {
+        width: 100%;
+    }
+
+    .download-buttons {
+        flex-direction: column;
+    }
+    .download-buttons .download-btn {
+        margin-bottom: 10px;
+    }  
     .features-grid,
     .steps,
     .features-list {
         grid-template-columns: 1fr;
-    }
+        padding: 0 20px;
+        }
 
+        .feature-item {
+            font-size: 16px;
+        }
+    .features-grid {
+        grid-template-columns: 1fr;
+        gap: 20px;
+        padding: 0 20px;
+    }
+    .steps {
+        grid-template-columns: 1fr;
+        gap: 30px;
+        padding: 0 20px;
+    }
+    .feature {
+        padding: 20px;
+    }
     .footer-content {
         flex-direction: column;
         gap: 20px;

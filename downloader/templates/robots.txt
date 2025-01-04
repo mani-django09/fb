@@ -4,5 +4,5 @@ Disallow: /admin/
 Disallow: /download/
 Disallow: /download-reel/
 
-Sitemap: https://yourdomain.com/sitemap.xml
+Sitemap: https://www.fdownloader.ltd/sitemap.xml
 

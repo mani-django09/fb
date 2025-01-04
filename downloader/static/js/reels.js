@@ -57,11 +57,12 @@ $(document).ready(function() {
         // Make AJAX request
         $.ajax({
             url: '/download-reel/',
-            method: 'POST',
-            data: JSON.stringify({ url: url }),
-            contentType: 'application/json',
-            headers: {
-                'X-CSRFToken': getCookie('csrftoken')
+    method: 'POST',
+    data: JSON.stringify({ url: url }),
+    contentType: 'application/json',
+    headers: {
+        'X-CSRFToken': getCookie('csrftoken'),
+        'X-Requested-With': 'XMLHttpRequest'
             },
             success: function(response) {
                 progressContainer.fadeOut(300, function() {

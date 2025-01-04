@@ -171,6 +171,9 @@ SESSION_ENGINE = 'django.contrib.sessions.backends.db'
 SESSION_COOKIE_SECURE = True
 
 
+CSRF_COOKIE_SECURE = True  # if using HTTPS
+CSRF_COOKIE_HTTPONLY = False  # Allow JavaScript to access the cookie
+
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587

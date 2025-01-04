@@ -10,6 +10,8 @@
     
         <div class="container">
             <form class="download-form" id="download-form">
+                {% csrf_token %}
+
                 <div class="input-group">
                     <input type="text" id="video-url" placeholder="Paste your Facebook Reel link here">
                     <button type="button" class="paste-btn">
