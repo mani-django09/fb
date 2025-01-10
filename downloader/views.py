@@ -22,11 +22,10 @@ def create_session():
     """Create a session with proper headers and cookies."""
     session = requests.Session()
     session.headers.update({
-        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
-        'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8',
-        'Accept-Language': 'en-US,en;q=0.9',
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36',
+        'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8',
+        'Accept-Language': 'en-US,en;q=0.5',
         'Accept-Encoding': 'gzip, deflate, br',
-        'DNT': '1',
         'Connection': 'keep-alive',
         'Upgrade-Insecure-Requests': '1',
         'Sec-Fetch-Dest': 'document',
@@ -34,6 +33,10 @@ def create_session():
         'Sec-Fetch-Site': 'none',
         'Sec-Fetch-User': '?1',
         'Cache-Control': 'max-age=0',
+        'Referer': 'https://www.facebook.com/',
+        'Sec-Ch-Ua': '"Not A(Brand";v="99", "Google Chrome";v="121", "Chromium";v="121"',
+        'Sec-Ch-Ua-Mobile': '?0',
+        'Sec-Ch-Ua-Platform': '"Windows"',
     })
     return session
 
@@ -62,16 +65,30 @@ def extract_video_url(html_content, url):
     """Extract video URLs using multiple patterns and methods."""
     video_urls = {'hd_url': None, 'sd_url': None}
     
-    # Method 1: Direct regex patterns
+    # Method 1: Extract from JSON-LD
+    try:
+        json_ld_match = re.search(r'<script type="application/ld\+json">(.*?)</script>', html_content, re.DOTALL)
+        if json_ld_match:
+            json_data = json.loads(json_ld_match.group(1))
+            if isinstance(json_data, dict) and 'contentUrl' in json_data:
+                video_urls['sd_url'] = json_data['contentUrl']
+    except:
+        pass
+
+    # Method 2: Direct regex patterns with extended patterns
     patterns = [
         # HD quality patterns
-        r'playable_url_quality_hd[\"\']\s*:\s*[\"\'](.*?)[\"\']',
-        r'hd_src[\"\']\s*:\s*[\"\'](.*?)[\"\']',
-        r'HD_URL[\"\']\s*:\s*[\"\'](.*?)[\"\']',
+        r'playable_url_quality_hd["\']\s*:\s*["\']([^"\']+)["\']',
+        r'hd_src["\']\s*:\s*["\']([^"\']+)["\']',
+        r'HD_URL["\']\s*:\s*["\']([^"\']+)["\']',
+        r'"playable_url_quality_hd":"([^"]+)"',
+        r'"hd_src":"([^"]+)"',
         # SD quality patterns
-        r'playable_url[\"\']\s*:\s*[\"\'](.*?)[\"\']',
-        r'sd_src[\"\']\s*:\s*[\"\'](.*?)[\"\']',
-        r'SD_URL[\"\']\s*:\s*[\"\'](.*?)[\"\']',
+        r'playable_url["\']\s*:\s*["\']([^"\']+)["\']',
+        r'sd_src["\']\s*:\s*["\']([^"\']+)["\']',
+        r'SD_URL["\']\s*:\s*["\']([^"\']+)["\']',
+        r'"playable_url":"([^"]+)"',
+        r'"sd_src":"([^"]+)"',
     ]
     
     for pattern in patterns:
@@ -83,32 +100,53 @@ def extract_video_url(html_content, url):
             elif not video_urls['sd_url']:
                 video_urls['sd_url'] = url
 
-    # Method 2: Extract from video data JSON
+    # Method 3: Extract from video data JSON with broader search
     try:
-        video_data = re.search(r'videoData:\s*(\[.*?\])', html_content)
-        if video_data:
-            data = json.loads(video_data.group(1))
-            for item in data:
-                if isinstance(item, dict):
-                    if item.get('hd_url') and not video_urls['hd_url']:
-                        video_urls['hd_url'] = item['hd_url']
-                    if item.get('sd_url') and not video_urls['sd_url']:
-                        video_urls['sd_url'] = item['sd_url']
+        video_data_patterns = [
+            r'videoData:\s*(\[.*?\])',
+            r'"videoData":\s*(\[.*?\])',
+            r'"videos":\s*(\[.*?\])',
+        ]
+        
+        for pattern in video_data_patterns:
+            video_data = re.search(pattern, html_content)
+            if video_data:
+                data = json.loads(video_data.group(1))
+                for item in data:
+                    if isinstance(item, dict):
+                        if item.get('hd_url') and not video_urls['hd_url']:
+                            video_urls['hd_url'] = item['hd_url']
+                        if item.get('sd_url') and not video_urls['sd_url']:
+                            video_urls['sd_url'] = item['sd_url']
     except:
         pass
 
-    # Method 3: Try to extract from graphql data
+    # Method 4: Try to extract from graphql data with multiple patterns
     try:
-        graphql_data = re.search(r'{\s*"graphql":\s*({.*?})}', html_content)
-        if graphql_data:
-            data = json.loads(graphql_data.group(1))
-            video_element = data.get('video', {})
-            if video_element.get('playable_url_quality_hd'):
-                video_urls['hd_url'] = video_element['playable_url_quality_hd']
-            if video_element.get('playable_url'):
-                video_urls['sd_url'] = video_element['playable_url']
+        graphql_patterns = [
+            r'{\s*"graphql":\s*({.*?})}',
+            r'"graphql":\s*({.*?})',
+            r'"video":\s*({.*?})',
+        ]
+        
+        for pattern in graphql_patterns:
+            graphql_data = re.search(pattern, html_content)
+            if graphql_data:
+                data = json.loads(graphql_data.group(1))
+                video_element = data.get('video', {})
+                if video_element.get('playable_url_quality_hd'):
+                    video_urls['hd_url'] = video_element['playable_url_quality_hd']
+                if video_element.get('playable_url'):
+                    video_urls['sd_url'] = video_element['playable_url']
     except:
         pass
+
+    # Clean and validate URLs
+    for quality in ['hd_url', 'sd_url']:
+        if video_urls[quality]:
+            video_urls[quality] = video_urls[quality].replace('\\', '')
+            if not video_urls[quality].startswith('http'):
+                video_urls[quality] = 'https:' + video_urls[quality] if video_urls[quality].startswith('//') else None
 
     return video_urls
 
@@ -151,11 +189,14 @@ def home(request):
 @csrf_exempt
 def download_video(request):
     if request.method != 'POST':
+        logger.error("Invalid request method")
         return JsonResponse({'success': False, 'error': 'Invalid request method'})
     
     try:
         data = json.loads(request.body)
         url = data.get('url', '').strip()
+        
+        logger.info(f"Processing URL: {url}")
         
         if not url:
             raise FacebookDownloaderException('URL is required')
@@ -165,29 +206,66 @@ def download_video(request):
         
         # Clean the URL
         url = clean_url(url)
+        logger.info(f"Cleaned URL: {url}")
         
         # Create a session with proper headers
         session = create_session()
+        session.verify = True  # Enable SSL verification
         
-        # Try to fetch the video page
+        # Configure session with retry mechanism
+        adapter = requests.adapters.HTTPAdapter(
+            max_retries=3,
+            pool_connections=100,
+            pool_maxsize=100
+        )
+        session.mount('https://', adapter)
+        
+        # Try to fetch the video page with multiple retries
         max_retries = 3
+        retry_delay = 2  # seconds
+        
         for attempt in range(max_retries):
             try:
-                response = session.get(url, timeout=15)
+                logger.info(f"Attempt {attempt + 1} to fetch video")
+                response = session.get(url, timeout=30)  # Increased timeout
                 response.raise_for_status()
+                
+                # Log response status and headers for debugging
+                logger.debug(f"Response status: {response.status_code}")
+                logger.debug(f"Response headers: {response.headers}")
+                
                 html_content = response.text
+                logger.debug(f"HTML content length: {len(html_content)}")
                 
                 # Extract video URLs
                 video_urls = extract_video_url(html_content, url)
+                logger.info(f"Extracted URLs: SD={bool(video_urls['sd_url'])}, HD={bool(video_urls['hd_url'])}")
                 
                 if not video_urls['sd_url'] and not video_urls['hd_url']:
                     if attempt < max_retries - 1:
-                        time.sleep(2)  # Wait before retrying
+                        logger.warning(f"No video URLs found on attempt {attempt + 1}, retrying...")
+                        time.sleep(retry_delay)
+                        # Update headers for retry
+                        session.headers.update({
+                            'User-Agent': f'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/{121 + attempt}.0.0.0 Safari/537.36'
+                        })
                         continue
                     raise FacebookDownloaderException('No video found or video might be private')
                 
                 # Get video title
                 video_title = get_video_title(html_content)
+                logger.info(f"Successfully extracted video: {video_title}")
+                
+                # Validate extracted URLs
+                for quality in ['sd_url', 'hd_url']:
+                    if video_urls[quality]:
+                        try:
+                            head_response = session.head(video_urls[quality], timeout=10)
+                            head_response.raise_for_status()
+                            logger.info(f"Validated {quality} URL")
+                        except Exception as e:
+                            logger.warning(f"Failed to validate {quality} URL: {str(e)}")
+                            video_urls[quality] = None
                 
                 return JsonResponse({
                     'success': True,
@@ -196,19 +274,23 @@ def download_video(request):
                     'title': video_title
                 })
             
-            except requests.RequestException:
+            except requests.RequestException as e:
+                logger.error(f"Request failed on attempt {attempt + 1}: {str(e)}")
                 if attempt < max_retries - 1:
-                    time.sleep(2)  # Wait before retrying
+                    time.sleep(retry_delay)
+                    continue
+                raise FacebookDownloaderException(f'Failed to fetch video: {str(e)}')
+            
+            except Exception as e:
+                logger.error(f"Unexpected error on attempt {attempt + 1}: {str(e)}")
+                if attempt < max_retries - 1:
+                    time.sleep(retry_delay)
                     continue
                 raise
         
-    except json.JSONDecodeError:
-        logger.error("Invalid JSON data received")
+    except json.JSONDecodeError as e:
+        logger.error(f"Invalid JSON data received: {str(e)}")
         return JsonResponse({'success': False, 'error': 'Invalid request data'})
-        
-    except requests.RequestException as e:
-        logger.error(f"Request failed: {str(e)}")
-        return JsonResponse({'success': False, 'error': 'Failed to fetch video data. Please try again.'})
         
     except FacebookDownloaderException as e:
         logger.error(f"Facebook downloader error: {str(e)}")
@@ -217,7 +299,7 @@ def download_video(request):
     except Exception as e:
         logger.error(f"Unexpected error: {str(e)}")
         return JsonResponse({'success': False, 'error': 'An unexpected error occurred'})
-
+    
 @csrf_exempt
 def validate_url(request):
     if request.method != 'POST':
